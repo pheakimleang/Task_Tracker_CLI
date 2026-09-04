@@ -49,7 +49,7 @@ public class Task implements Comparable<Task>{
         //and compare it with other ID that pass into the param
         return Integer.compare(this.id, other.id);
     }
-
+    //
     @Override
     public boolean equals(Object o){
         if (this == o) return true;
@@ -57,4 +57,21 @@ public class Task implements Comparable<Task>{
         Task task = (Task) o;
         return id == task.id;
     }
+    //
+    @Override
+    public int hashCode(){
+        return Objects.hashCode(id);
+    }
+    //print out all field in a nice way
+    //so i Overide the toString(); method
+    @Override
+    public String toString(){
+        return String.format("[Task: %d | Description: %s | Status: %s | Created: %s | Update: %s]"
+        ,this.id, this.description, this.status.getTitleCaseStatus(),
+                this.createdTime.toString(),
+                isUpdate() ? this.updateTime.toString() : "N/A");
+
+    }
+    
+
 }
