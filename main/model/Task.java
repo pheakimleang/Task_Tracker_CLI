@@ -9,16 +9,16 @@ public class Task implements Comparable<Task>{
     private final String description;
     private final TaskStatus status;
     private final LocalDateTime createdTime;
-    private final LocalDateTime updateTime;
+    private final LocalDateTime updatedTime;
 
     public Task(int id, String description, TaskStatus status,
-                LocalDateTime createdTime, LocalDateTime updateTime){
+                LocalDateTime createdTime, LocalDateTime updatedTime){
 
         this.id = id;
         this.description = description;
         this.status = status;
         this.createdTime = createdTime;
-        this.updateTime = updateTime;
+        this.updatedTime = updatedTime;
 
     }
     //All get method to return field in the class
@@ -35,12 +35,12 @@ public class Task implements Comparable<Task>{
         return createdTime;
     }
     public LocalDateTime getUpdateTime(){
-        return updateTime;
+        return updatedTime;
     }
     //is updateTime isAfter createdTime
     //the isUpdate return true
     public boolean isUpdate(){
-        return updateTime.isAfter(createdTime);
+        return updatedTime.isAfter(createdTime);
     }
 
     @Override
@@ -69,9 +69,27 @@ public class Task implements Comparable<Task>{
         return String.format("[Task: %d | Description: %s | Status: %s | Created: %s | Update: %s]"
         ,this.id, this.description, this.status.getTitleCaseStatus(),
                 this.createdTime.toString(),
-                isUpdate() ? this.updateTime.toString() : "N/A");
+                isUpdate() ? this.updatedTime.toString() : "N/A");
 
     }
-    
-
+    //check to make sure all task ID is a positive number
+    private void checkId(int id) {
+        if (id <= 0)
+            throw new IllegalArgumentException("Task ID must be positive");
+    }
+    //check validate the description make sure it not null or empty
+    //or larger than 255 letters
+    private void checkDescription(String description){
+        if (description == null || description.isBlank())
+            throw new IllegalArgumentException("Description cannot be null or empty");
+        if (description.length() > 255)
+            throw new IllegalArgumentException("Description is too long");
+    }
+    //update time cannot before the created time
+    //throw Exception if that happen
+    private void checkUpdateTime(LocalDateTime createdTime, LocalDateTime updatedTime){
+        if (updatedTime.isBefore(createdTime)){
+            throw new IllegalArgumentException("Updated time cannot be before Created time");
+        }
+    }
 }
